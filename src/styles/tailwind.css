@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.odd-card {
+  @apply bg-gray-700;
+}
+
+.even-card {
+  @apply bg-gray-800;
+}
+
+.red_bull {
+  @apply text-redBull;
+}
+
+.ferrari {
+  @apply text-ferrari;
+}
+
+.aston_martin {
+  @apply text-aston;
+}
+
+.mercedes {
+  @apply text-mercedes;
+}
+
+.mclaren {
+  @apply text-mclaren;
+}
+
+.haas {
+  @apply text-haas;
+}
+
+.williams {
+  @apply text-williams;
+}
+
+.sauber {
+  @apply text-sauber;
+}
+
+.rb {
+  @apply text-rb;
+}
+
+.alpine {
+  @apply text-alpine;
+}
