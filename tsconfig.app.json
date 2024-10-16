@@ -1,0 +1,23 @@
+{
+  "extends": "./tsconfig.json", // Extend the base tsconfig.json
+  "compilerOptions": {
+    "module": "esnext",
+    "composite": true,
+    "noEmit": false,
+    "baseUrl": ".", // Set the base directory for module resolution
+    "paths": {
+      // Set up module aliasing if needed
+      "@components/*": ["src/components/*"],
+      "@services/*": ["src/services/*"],
+      "@utils/*": ["src/utils/*"],
+      "@styles/*": ["src/styles/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@pages/*": ["src/pages/*"],
+      "@data/*": ["src/data/*"],
+      "@app-types/*": ["src/types/*"],
+      "@assets": ["public/assets/*"]
+    }
+  },
+  "include": ["src"], // Include all TypeScript files in the src directory
+  "exclude": ["node_modules", "dist"] // Exclude node_modules and dist directories
+}
