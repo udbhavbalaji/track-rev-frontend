@@ -1,4 +1,8 @@
 import {
+  RaceScheduleCardItemType,
+  RaceScheduleItem,
+} from "@app-types/trackRevClient/schedule";
+import {
   ConstructorStandingsCardItemType,
   ConstructorStandingsItem,
 } from "@app-types/trackRevClient/standings/constructors";
@@ -6,6 +10,7 @@ import {
   DriverStandingsCardItemType,
   DriverStandingsItem,
 } from "@app-types/trackRevClient/standings/drivers";
+import { getMonthName } from "./helpers";
 
 export const getConstructorStandingCard = (
   item: ConstructorStandingsItem
@@ -29,6 +34,21 @@ export const getDriverStandingCard = (
     driverNumber: item.driverNumber,
     constructorName: item.constructorName,
     constructorId: item.constructorId,
+  };
+  return obj;
+};
+
+export const getRaceScheduleCard = (
+  item: RaceScheduleItem
+): RaceScheduleCardItemType => {
+  const obj: RaceScheduleCardItemType = {
+    round: item.round,
+    raceName: item.raceName,
+    circuitName: item.circuitName,
+    startDate: parseInt(item.FirstPractice.date.split("-")[2]),
+    endDate: parseInt(item.Race.date.split("-")[2]),
+    startMonth: getMonthName(parseInt(item.FirstPractice.date.split("-")[1])),
+    endMonth: getMonthName(parseInt(item.Race.date.split("-")[1])),
   };
   return obj;
 };

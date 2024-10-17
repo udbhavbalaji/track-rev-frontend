@@ -1,5 +1,6 @@
 import { RequestTypes } from "@app-types/trackRevClient/primitive";
 import HomePage from "@pages/HomePage";
+import SchedulePage from "@pages/SchedulePage";
 import StandingsPage from "@pages/Standings";
 import ErgastProvider from "@services/providers/ErgastProvider";
 // import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -25,7 +26,7 @@ function App() {
       <ErgastProvider year={year}>
         <Router>
           <Routes>
-            <Route path='/' element={<HomePage fn={handleYearUpdate} />} />
+            <Route path='/' element={<HomePage />} />
             <Route
               path='/constructors/standings'
               element={
@@ -35,6 +36,10 @@ function App() {
             <Route
               path='/drivers/standings'
               element={<StandingsPage reqType={RequestTypes.DriverStandings} />}
+            />
+            <Route
+              path='/races/schedule'
+              element={<SchedulePage reqType={RequestTypes.SeasonSchedule} />}
             />
             <Route path='/*' element={<Navigate to={"/"} />} />
           </Routes>

@@ -11,12 +11,19 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 import {
   ConstructorStandingEndpoint,
   DriverStandingEndpoint,
+  SeasonScheduleEndpoint,
 } from "@services/api/endpoints";
 import { fetchData } from "@services/api/client";
 import {
   DriverStandingsContextType,
   DriverStandingsData,
 } from "@app-types/trackRevClient/standings/drivers";
+import {
+  RaceScheduleItem,
+  SeasonScheduleContextType,
+  SeasonScheduleData,
+} from "@app-types/trackRevClient/schedule";
+import { RaceScheduleType } from "@app-types/trackRevResponse/schedule";
 
 export const ErgastContext = createContext<ErgastLoadedDataContextType | null>(
   null
@@ -35,13 +42,17 @@ const ErgastProvider: React.FC<ErgastProviderProps> = ({ children, year }) => {
     DriverStandingsContextType | undefined
   >(undefined);
 
+  const [seasonScheduleData, setSeasonSchedule] = useState<
+    SeasonScheduleContextType | undefined
+  >(undefined);
+
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleStandingsUpdate = () => {};
 
   useEffect(() => {
-    console.log("Im coming here");
+    // console.log("Im coming here");
     const fetchStandingsData = async () => {
       setError(null);
       setLoading(true);
@@ -92,16 +103,58 @@ const ErgastProvider: React.FC<ErgastProviderProps> = ({ children, year }) => {
       }
     };
 
+    const fetchRaceData = async () => {
+      console.log("im coming here");
+      setError(null);
+      setLoading(true);
+      try {
+        const schedules = await fetchData<RaceScheduleType, RaceScheduleItem>(
+          `${SeasonScheduleEndpoint.url}/${year}`,
+          SeasonScheduleEndpoint.handler
+        );
+        if (!Array.isArray(schedules)) {
+          throw new Error("Receiving invalid schedule data");
+        }
+        const processedSchedules: SeasonScheduleData = {
+          season: schedules[0].season,
+          data: schedules,
+        };
+        if (!seasonScheduleData) {
+          let obj: SeasonScheduleContextType = {};
+          obj[processedSchedules.season] = processedSchedules.data;
+          setSeasonSchedule(obj);
+          console.log(obj);
+        } else {
+          let obj = seasonScheduleData;
+          obj[processedSchedules.season] = processedSchedules.data;
+          setSeasonSchedule(obj);
+        }
+      } catch (err) {
+        setError((err as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchStandingsData();
+    fetchRaceData();
   }, [year]);
 
-  if (!constructorStandingsData || !driverStandingsData) {
+  if (
+    !constructorStandingsData ||
+    !driverStandingsData ||
+    !seasonScheduleData
+  ) {
     return <div>Error: Endpoint not accessed</div>;
   }
 
   return (
     <ErgastContext.Provider
-      value={{ constructorStandingsData, driverStandingsData }}
+      value={{
+        constructorStandingsData,
+        driverStandingsData,
+        seasonScheduleData,
+      }}
     >
       {loading ? <p>Loading...</p> : !error ? children : (error as string)}
     </ErgastContext.Provider>

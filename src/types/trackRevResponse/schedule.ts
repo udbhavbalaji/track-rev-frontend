@@ -1,7 +1,7 @@
 import {
   RaceType,
   SessionTimingType,
-} from "@app-types/trackRevRequest/primitive";
+} from "@app-types/trackRevResponse/primitive";
 
 export interface RaceScheduleType extends RaceType {
   FirstPractice: SessionTimingType;
