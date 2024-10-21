@@ -9,6 +9,15 @@ export interface ErgastLoadedDataContextType {
   constructorStandingsData: ConstructorStandingsContextType;
   driverStandingsData: DriverStandingsContextType;
   seasonScheduleData: SeasonScheduleContextType;
+  years: {
+    [key: string]: string;
+  };
+  setYears: (reqType: string, year: string) => void;
+  fetchConstructorStandingsData: () => Promise<void>;
+  fetchDriverStandingsData: () => Promise<void>;
+  fetchSeasonScheduleData: () => Promise<void>;
+  error: string | null;
+  loading: boolean;
 }
 
 export interface EndPointItem<T, R> {

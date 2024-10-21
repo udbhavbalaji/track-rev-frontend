@@ -23,7 +23,7 @@ function App() {
 
   return (
     <>
-      <ErgastProvider year={year}>
+      <ErgastProvider>
         <Router>
           <Routes>
             <Route path='/' element={<HomePage />} />
